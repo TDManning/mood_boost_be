@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.desribe "Activities Controller" do 
+RSpec.describe "Activities Controller" do 
   describe "Validates activities" do
     
   end

@@ -1,5 +1,5 @@
-class User < ApplicationController
-  has_many :user_activities, dependent: :destory
+class User < ApplicationRecord
+  has_many :user_activities, dependent: :destroy
   has_many :activities, through: :user_activities
 
   validates :username, presence: true, uniqueness: true

@@ -1,8 +1,34 @@
 class UserSerializer
   include JSONAPI::Serializer
+  attributes :username, :first_name, :email
 
-  attributes :username, :first_name, :email, :created_at, :updated_at
+  def self.format_user(user)
+    { 
+      data: {
+        id: user.id.to_s,
+        type: "user", 
+        attributes: {
+          username: user.username,
+          first_name: user.first_name,
+          email: user.email
+        }
+      }
+    }
+  end
 
-  has_many :user_activities
-  has_many :activities, through: :user_activities
+  def self.format_users(users)
+    { 
+      data: users.map do |user|
+      {
+        id: user.id.to_s,
+        type: "user", 
+        attributes: {
+          username: user.username,
+          first_name: user.first_name,
+          email: user.email
+        }
+      }
+  end
+}
+end
 end
