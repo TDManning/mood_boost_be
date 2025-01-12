@@ -1,3 +1,3 @@
-# class Api::V1::Users::ActivitiesContoller < ApplicationController
+class Api::V1::Users::ActivitiesController < ApplicationController
   
-# end
+end
