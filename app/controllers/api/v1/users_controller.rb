@@ -1,22 +1,26 @@
 class Api::V1::UsersController < ApplicationController
 
   def index
+    users= User.all
     render json: UserSerializer.format_users(User.all)
   end
   
   def create
     user = User.new(user_params)
-    render json: UserSerializer.new(user), status: :created
+    if user.save
+      render json: UserSerializer.new(user), status: :created
+    else
+      render json: ErrorSerializer.format_error(ErrorMessage.new(user.errors.full_messages.to_sentence, 400)), status: :bad_request
+    end
   end
 
-  def update
-
-  end
+  # def patch
+  #  STRETCH GOAL
+  # end
 
   private
 
   def user_params
-    params.permit(:username, :password_digest, :first_name, :email)
+    params.require(:user).permit(:username, :password, :first_name, :email)
   end
-
 end
