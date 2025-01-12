@@ -1,5 +1,5 @@
 class Api::V1::Users::ActivitiesController < ApplicationController
-  def show
+  def index
     user = User.find_by(id: params[:user_id])
     if user
       activities = user.activities
@@ -10,5 +10,7 @@ class Api::V1::Users::ActivitiesController < ApplicationController
   end
 
   def create
+
+  end
 
 end
