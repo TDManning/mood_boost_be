@@ -11,8 +11,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:index, :create, :update]
       namespace :users do
-        resources :activities, only:[:index]
-        resources :sessions, only: [:show]
+        resources :activities, only:[:create, :index]
+        resources :sessions, only: [:create]
       end
     end
   end
