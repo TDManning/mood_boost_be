@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, only: [:index, :create, :update]
+      namespace :users do
+        resources :activities, only:[:create, :index]
+        resources :sessions, only: [:create]
+      end
     end
   end
 end
