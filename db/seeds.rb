@@ -8,8 +8,6 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-# default_user = User.create!(username: "default", password_digest: "default", first_name: "default", email: "default@gmail.com")
-
 UserActivity.destroy_all
 Activity.destroy_all
 User.destroy_all
@@ -29,11 +27,11 @@ default_user = User.create!(
 )
 
 users = [
-  { username: "fatima", email: "fatima@example.com", first_name: "Fatima", password: "securepassword1" },
-  { username: "meg", email: "meg@example.com", first_name: "Meg", password: "securepassword2" },
-  { username: "dominic", email: "dominic@example.com", first_name: "Dominic", password: "securepassword3" },
-  { username: "alex", email: "alex@example.com", first_name: "Alex", password: "securepassword4" },
-  { username: "jane", email: "jane@example.com", first_name: "Jane", password: "securepassword5" }
+  { username: "apu_nahasapeemapetilon", email: "apu.nahasapeemapetilon@example.com", first_name: "Apu", password: "securepassword1" },
+  { username: "ned_flanders", email: "ned.flanders@example.com", first_name: "Ned", password: "securepassword2" },
+  { username: "edna_krabappel", email: "edna.krabappel@example.com", first_name: "Edna", password: "securepassword3" },
+  { username: "moe_szyslak", email: "moe.szyslak@example.com", first_name: "Moe", password: "securepassword4" },
+  { username: "milhouse_van_houten", email: "milhouse.vanhouten@example.com", first_name: "Milhouse", password: "securepassword5" }
 ].map do |user_data|
   User.create!(user_data)
 end
@@ -43,6 +41,14 @@ end
     UserActivity.create!(user: user, activity: activity)
   end
 end
+
+# Add a user with no activities for edge case testing
+user_without_activities = User.create!(
+  username: "no_activities",
+  email: "no_activities@example.com",
+  first_name: "NoActivities",
+  password: "password123"
+)
 
 puts "Seed data created successfully!"
 puts "#{User.count} users created."
