@@ -5,7 +5,9 @@ class Api::V1::Users::ActivitiesController < ApplicationController
       activities = user.activities
       render json: { activities: activities }, status: :ok
     else
-      render json: { error: "User not found" }, status: :not_found
+      render json: ErrorSerializer.format_error(
+        ErrorMessage.new("User not found", :not_found)
+      ), status: :not_found
     end
   end
 
@@ -15,8 +17,9 @@ class Api::V1::Users::ActivitiesController < ApplicationController
     if user_activity.persisted?
       render json: { user_activity: user_activity }, status: :created
     else
-      error_message = "Unable to create activity. Please ensure the user and activity are valid."
-      render json: { error: error_message }, status: :unprocessable_entity
+      render json: ErrorSerializer.format_error(
+        ErrorMessage.new("Unable to create activity. Please ensure the user and activity are valid.", :unprocessable_entity)
+      ), status: :unprocessable_entity
     end
   end
 end
