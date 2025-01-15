@@ -29,4 +29,22 @@ RSpec.describe User, type: :model do
       expect(user.save).to be_falsey
     end
   end
+
+  describe "first name validation" do
+    it "allows first names up to 20 characters long" do
+      user = User.create(first_name: "ABCDEFGHIJKLMNOPQRST", username: "testuser", email: "test@example.com", password: "password123", password_confirmation: "password123")
+      first_name = user.first_name
+
+      expect(user.valid?).to be_truthy
+      expect(user.save).to be_truthy
+    end
+
+    it "will not allow first names longer than 20 characters" do
+      user = User.create(first_name: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", username: "testuser", email: "test@example.com", password: "password123", password_confirmation: "password123")
+      first_name = user.first_name
+
+      expect(user.valid?).to be_falsey
+      expect(user.save).to be_falsey
+    end
+  end
 end
