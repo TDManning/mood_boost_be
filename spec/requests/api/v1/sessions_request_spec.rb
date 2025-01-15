@@ -52,5 +52,29 @@ RSpec.describe Api::V1::SessionsController, type: :request do
         expect(parsed_response[:errors].first[:detail]).to eq("Invalid login credentials")
       end
     end
+
+    context "when the username or password are empty" do
+      it "returns an bad request response with an error message" do
+        user_params = { username: "", password: user.password }
+
+        post "/api/v1/sessions", params: user_params.to_json, headers: { "CONTENT_TYPE" => "application/json" }
+        expect(response).to have_http_status(:bad_request)
+
+        parsed_response = JSON.parse(response.body, symbolize_names: true)
+        expect(parsed_response[:errors]).to be_an(Array)
+        expect(parsed_response[:errors].first[:detail]).to eq("Username and password cannot be blank")
+      end
+
+      it "returns an bad request response with an error message" do
+        user_params = { username: user.username, password: "" }
+
+        post "/api/v1/sessions", params: user_params.to_json, headers: { "CONTENT_TYPE" => "application/json" }
+        expect(response).to have_http_status(:bad_request)
+
+        parsed_response = JSON.parse(response.body, symbolize_names: true)
+        expect(parsed_response[:errors]).to be_an(Array)
+        expect(parsed_response[:errors].first[:detail]).to eq("Username and password cannot be blank")
+      end
+    end
   end
 end
