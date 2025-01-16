@@ -17,4 +17,12 @@ class UserActivity < ApplicationRecord
   def self.create_with_user_and_activity(user_id, activity_id)
     create(user_id: user_id, activity_id: activity_id)
   end
+
+  def self.activity_summary_by_user(user_id)
+    select('activities.name, COUNT(user_activities.id) as activity_count')
+      .joins(:activity)
+      .where(user_id: user_id)
+      .group('activities.name')
+      .order('activity_count DESC')
+  end
 end
