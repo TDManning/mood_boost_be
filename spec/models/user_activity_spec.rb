@@ -84,40 +84,40 @@ RSpec.describe UserActivity, type: :model do
     end
   end
 
-  # describe ".activity_summary_by_user" do
-  #   let!(:user) { create(:user) }
-  #   let!(:activity1) { create(:activity, name: "Running") }
-  #   let!(:activity2) { create(:activity, name: "Swimming") }
+  describe ".activity_summary_by_user" do
+    let!(:user) { create(:user) }
+    let!(:activity1) { create(:activity, name: "Running") }
+    let!(:activity2) { create(:activity, name: "Swimming") }
   
-  #   before do
-  #     create_list(:user_activity, 5, user: user, activity: activity1)
-  #     create_list(:user_activity, 3, user: user, activity: activity2)
-  #   end
+    before do
+      create_list(:user_activity, 5, user: user, activity: activity1)
+      create_list(:user_activity, 3, user: user, activity: activity2)
+    end
   
-  #   context "when the user exists" do
-  #     it "returns a summary of activity counts for the user" do
-  #       summary = UserActivity.activity_summary_by_user(user.id)
+    context "when the user exists" do
+      it "returns a summary of activity counts for the user" do
+        summary = UserActivity.activity_summary_by_user(user.id)
   
-  #       expect(summary).to eq({ "Running" => 5, "Swimming" => 3 })
-  #     end
-  #   end
+        expect(summary).to eq({ "Running" => 5, "Swimming" => 3 })
+      end
+    end
   
-  #   context "when the user does not exist" do
-  #     it "returns an empty hash" do
-  #       summary = UserActivity.activity_summary_by_user(999)
+    context "when the user does not exist" do
+      it "returns an empty hash" do
+        summary = UserActivity.activity_summary_by_user(999)
   
-  #       expect(summary).to eq({})
-  #     end
-  #   end
+        expect(summary).to eq({})
+      end
+    end
   
-  #   context "when the user has no activities" do
-  #     let!(:new_user) { create(:user) }
+    context "when the user has no activities" do
+      let!(:new_user) { create(:user) }
   
-  #     it "returns an empty hash" do
-  #       summary = UserActivity.activity_summary_by_user(new_user.id)
+      it "returns an empty hash" do
+        summary = UserActivity.activity_summary_by_user(new_user.id)
   
-  #       expect(summary).to eq({})
-  #     end
-  #   end
-  # end
+        expect(summary).to eq({})
+      end
+    end
+  end
 end  

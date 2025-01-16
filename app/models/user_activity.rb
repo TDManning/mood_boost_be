@@ -19,10 +19,17 @@ class UserActivity < ApplicationRecord
   end
 
   def self.activity_summary_by_user(user_id)
-    select('activities.name, COUNT(user_activities.id) as activity_count')
-      .joins(:activity)
-      .where(user_id: user_id)
-      .group('activities.name')
-      .order('activity_count DESC')
+    summary = select('activities.name, COUNT(user_activities.id) as activity_count')
+            .joins(:activity)
+            .where(user_id: user_id)
+            .group('activities.name')
+            .order('activity_count DESC')
+    build_summary_hash(summary)
+  end
+
+  def self.build_summary_hash(summary)
+    summary.each_with_object({}) do |activity, hash|
+      hash[activity.name] = activity.activity_count
+    end
   end
 end
