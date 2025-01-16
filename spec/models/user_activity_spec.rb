@@ -66,10 +66,10 @@ RSpec.describe UserActivity, type: :model do
     end
 
     context "when the user does not exist" do
-      it "returns nil" do
+      it "returns an empty array" do
         activities = UserActivity.get_user_activities(999)
 
-        expect(activities).to be_nil
+        expect(activities).to eq([])
       end
     end
 
@@ -130,7 +130,7 @@ RSpec.describe UserActivity, type: :model do
       "Running" => 5,
       "Swimming" => 3
     }
-    
+
     expect(result).to eq(expected_result)
   end
 
