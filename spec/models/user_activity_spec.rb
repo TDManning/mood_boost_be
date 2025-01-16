@@ -115,9 +115,30 @@ RSpec.describe UserActivity, type: :model do
   
       it "returns an empty hash" do
         summary = UserActivity.activity_summary_by_user(new_user.id)
-  
         expect(summary).to eq({})
       end
     end
+  end
+
+  it "converts a summary array into a hash of activity names and counts" do
+    summary = [
+      { name: "Running", activity_count: 5 },
+      { name: "Swimming", activity_count: 3 }
+    ]
+    result = UserActivity.build_summary_hash(summary)
+    expected_result = {
+      "Running" => 5,
+      "Swimming" => 3
+    }
+    
+    expect(result).to eq(expected_result)
+  end
+
+  it "returns an empty hash when the summary is empty" do
+  
+    summary = []
+    result = UserActivity.build_summary_hash(summary)
+
+    expect(result).to eq({})
   end
 end  

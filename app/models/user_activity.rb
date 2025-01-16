@@ -29,7 +29,7 @@ class UserActivity < ApplicationRecord
 
   def self.build_summary_hash(summary)
     summary.each_with_object({}) do |activity, hash|
-      hash[activity.name] = activity.activity_count
+      hash[activity[:name]] = activity[:activity_count]
     end
   end
 end
