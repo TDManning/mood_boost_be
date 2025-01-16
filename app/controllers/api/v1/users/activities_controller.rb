@@ -1,13 +1,12 @@
 class Api::V1::Users::ActivitiesController < ApplicationController
   def index
-    user = User.find_by(id: params[:user_id])
-    if user
-      activities = user.activities
-      render json: { activities: activities }, status: :ok
-    else
+    activities = UserActivity.get_user_activities(params[:user_id])
+    if activities.nil?
       render json: ErrorSerializer.format_error(
         ErrorMessage.new("User not found", :not_found)
       ), status: :not_found
+    else
+      render json: { activities: activities }, status: :ok
     end
   end
 
