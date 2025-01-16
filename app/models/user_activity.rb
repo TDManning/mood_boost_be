@@ -4,7 +4,7 @@ class UserActivity < ApplicationRecord
 
   def self.get_user_activities(user_id)
     user = User.find_by(id: user_id)
-    return nil if user.nil?
+    return [] if user.nil?
     user.activities
   end
 
@@ -19,11 +19,13 @@ class UserActivity < ApplicationRecord
   end
 
   def self.activity_summary_by_user(user_id)
+    return {} unless User.exists?(id: user_id)
+  
     summary = select('activities.name, COUNT(user_activities.id) as activity_count')
-            .joins(:activity)
-            .where(user_id: user_id)
-            .group('activities.name')
-            .order('activity_count DESC')
+              .joins(:activity)
+              .where(user_id: user_id)
+              .group('activities.name')
+              .order('activity_count DESC')
     build_summary_hash(summary)
   end
 

@@ -1,11 +1,17 @@
 class Api::V1::Users::ActivitiesController < ApplicationController
   def index
     if params[:summary] == 'true'
-      summary = UserActivity.activity_summary_by_user(params[:user_id])
-      render json: { activity_summary: summary }, status: :ok
+      if User.exists?(id: params[:user_id])
+        summary = UserActivity.activity_summary_by_user(params[:user_id])
+        render json: { activity_summary: summary }, status: :ok
+      else
+        render json: ErrorSerializer.format_error(
+          ErrorMessage.new("User not found", :not_found)
+        ), status: :not_found
+      end
     else
       activities = UserActivity.get_user_activities(params[:user_id])
-      if activities.nil?
+      if activities.empty?
         render json: ErrorSerializer.format_error(
           ErrorMessage.new("User not found", :not_found)
         ), status: :not_found
