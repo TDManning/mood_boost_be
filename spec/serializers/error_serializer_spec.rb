@@ -3,13 +3,12 @@ require 'rails_helper'
 RSpec.describe "Error Serializer" do
     describe "As Json" do 
         it "Returns a Hash with message and error keys" do 
-            hash = double('Input Object' , message: 'No', Error: 'Nah')
 
-            message = ErrorMessage.new(hash)
+            message = ErrorMessage.new("some message", "error")
     
             result = message.as_json
     
-            expect(result).to eq({ message: 'Hello World', status: 'success' })
+            expect(result).to eq({ message: 'some message', status: 'error' })
         end
     end
 end
