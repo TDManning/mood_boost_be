@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe User, type: :model do
   describe "Relationships:" do
-    it {should have_many (:user_activities)}
+    it {should have_many (:user_activities) }
     it {should have_many(:activities).through :user_activities}
   end
   describe "Validations:" do
