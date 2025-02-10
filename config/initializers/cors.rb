@@ -7,10 +7,11 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "https://mood-boost-fe.onrender.com"
+    origins "https://mood-boost-fe.onrender.com", 'http://localhost:3001', 'http://localhost:3000'
 
     resource "*",
       headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      methods: [:get, :post, :put, :patch, :delete, :options, :head], 
+      credentials: true
   end
 end

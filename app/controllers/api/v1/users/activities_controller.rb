@@ -1,35 +1,53 @@
 class Api::V1::Users::ActivitiesController < ApplicationController
   def index
-    if params[:summary] == 'true'
-      if User.exists?(id: params[:user_id])
-        summary = UserActivity.activity_summary_by_user(params[:user_id])
-        render json: { activity_summary: summary }, status: :ok
-      else
-        render json: ErrorSerializer.format_error(
-          ErrorMessage.new("User not found", :not_found)
-        ), status: :not_found
+    user = User.find_by(id: params[:user_id])
+
+    if user.nil?
+      return render json: ErrorSerializer.format_error(
+        ErrorMessage.new("User not found", :not_found)
+      ), status: :not_found
+    end
+
+    activities = user.user_activities.includes(:activity).order(created_at: :desc)
+    if activities.any?
+      activity_data = activities.map do |ua|
+        {
+          id: ua.id,
+          name: ua.activity.name,
+          created_at: ua.created_at
+        }
       end
+      render json: { activities: activity_data }, status: :ok
     else
-      activities = UserActivity.get_user_activities(params[:user_id])
-      if activities.empty?
-        render json: ErrorSerializer.format_error(
-          ErrorMessage.new("User not found", :not_found)
-        ), status: :not_found
-      else
-        render json: { activities: activities }, status: :ok
-      end
+      render json: ErrorSerializer.format_error(
+        ErrorMessage.new("No activities found for this user", :not_found)
+      ), status: :not_found
     end
   end
 
   def create
-    user_activity = UserActivity.create_new_activity(params[:user_id], params[:activity_id])
-  
+    user = User.find_by(id: params[:user_id])
+    
+    if user.nil?
+      return render json: ErrorSerializer.format_error(
+        ErrorMessage.new("User not found", :not_found)
+      ), status: :not_found
+    end
+
+    activity_name = params[:activity][:name]
+
+    activity = Activity.find_or_create_by(name: activity_name)
+
+    user_activity = UserActivity.create(user: user, activity: activity)
+
     if user_activity.persisted?
       render json: { user_activity: user_activity }, status: :created
     else
       render json: ErrorSerializer.format_error(
-        ErrorMessage.new("Unable to create activity. Please ensure the user and activity are valid.", :unprocessable_entity)
+        ErrorMessage.new("Unable to create activity", :unprocessable_entity)
       ), status: :unprocessable_entity
     end
   end
 end
+
+
